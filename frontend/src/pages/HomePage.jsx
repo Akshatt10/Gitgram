@@ -21,7 +21,7 @@ const HomePage = () => {
     setloading(true)
     try {
       const userRes = await fetch(`https://api.github.com/users/${username}`);
-      //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
+      
       const userProfile = await userRes.json();
       setuserProfile(userProfile);
 
