@@ -1,4 +1,10 @@
 const ExplorePage = () => {
+
+	const ExplorePage = () => {
+
+		
+
+	}
 	return (
 		<div className='px-4'>
 			<div className='bg-glass max-w-2xl mx-auto rounded-md p-4'>
