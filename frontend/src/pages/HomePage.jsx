@@ -14,28 +14,30 @@ const HomePage = () => {
   const [userProfile, setuserProfile] = useState(null);
   const [repos, setrepos] = useState([]);
   const [loading, setloading] = useState(false);
-  const [sortType, setsortType] = useState("forks");
+  const [sortType, setsortType] = useState("recent");
 
 
   const getUserProfileAndRepos = useCallback(async (username = "Akshatt10") => {
     setloading(true)
     try {
       const userRes = await fetch(`https://api.github.com/users/${username}`, {
-        headers:{
-          authorization: `token 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`
+        // headers:{
+        //   authorization: `token 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`,
            
-        }
+        // },
       });
       
       const userProfile = await userRes.json();
+      
       setuserProfile(userProfile);
 
       const repoRes = await fetch(userProfile.repos_url);
       const repos = await repoRes.json();
-      setrepos(repos);
 
-      console.log("userprofile:", userProfile);
-      console.log("Repos:", repos);
+      repos.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+      setrepos(repos);
+      setuserProfile(userProfile);
 
       return { userProfile, repos }
 
@@ -64,16 +66,21 @@ const HomePage = () => {
     setuserProfile(userProfile);
     setrepos(repos);
     setloading(false);
+    setsortType('recent')
 
   }
 
-  const onSort = (sortType) =>{
-    if(sortType==='recent'){
-      repos.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-    } else if(sortType === "stars"){
-      repos.sort((a,b))
-    }
-  }
+  const onSort = (sortType) => {
+		if (sortType === "recent") {
+			repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, recent first
+		} else if (sortType === "stars") {
+			repos.sort((a, b) => b.stargazers_count - a.stargazers_count); //descending, most stars first
+		} else if (sortType === "forks") {
+			repos.sort((a, b) => b.forks_count - a.forks_count); //descending, most forks first
+		}
+		setsortType(sortType);
+		setrepos([...repos]);
+	};
   return (
     <div className='m-4'>
       <Search onSearch={onSearch} />
