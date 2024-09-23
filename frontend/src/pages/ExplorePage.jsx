@@ -16,18 +16,18 @@ const ExplorePage = () => {
 
     try {
       const res = await fetch(
-        `https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&per_page=10`, 
-		
-		// {
-		// 	headers:{
-		// 		authorization: `token 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`,
-		// 	},
-		// }
+        `https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&per_page=10`,
+
+        {
+          headers: {
+            authorization: `token ${import.meta.env.VITE_GITHUB_API_KEY}`,
+          }
+        }
       );
 
       const data = await res.json();
       setRepos(data.items);
-      setSelectedLanguage(language); 
+      setSelectedLanguage(language);
 
     } catch (error) {
       toast.error(error.message);
@@ -81,7 +81,7 @@ const ExplorePage = () => {
             Repositories
           </h2>
         )}
-        {!loading && repos && repos.length > 0 && <Repos repos={repos} alwaysFullWidth/>}
+        {!loading && repos && repos.length > 0 && <Repos repos={repos} alwaysFullWidth />}
         {loading && <Spinner />}
       </div>
     </div>
