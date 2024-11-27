@@ -1,14 +1,14 @@
-import { useCallback, useState, useEffect, useContext } from "react";
+import { useCallback, useState } from "react";
 import Search from "../components/Search";
 import SortRepos from "../components/SortRepos";
 import ProfileInfo from "../components/ProfileInfo";
 import Repos from "../components/Repos";
 import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
-import { AuthContext, useAuthContext } from "../context/AuthContext"; // Add your AuthContext or similar
+import { useAuthContext } from "../context/AuthContext";
 
 const HomePage = () => {
-  const { user } = useContext(useAuthContext); // Check if the user is authenticated
+  const { authUser, loading: authLoading } = useAuthContext(); // Get auth state
   const [userProfile, setuserProfile] = useState(null);
   const [repos, setrepos] = useState([]);
   const [loading, setloading] = useState(false);
@@ -60,8 +60,13 @@ const HomePage = () => {
     setrepos([...repos]);
   };
 
-  if (!user) {
-    // If user is not authenticated, show sign-in or sign-up options
+  if (authLoading) {
+    // Show a spinner while checking auth status
+    return <Spinner />;
+  }
+
+  if (!authUser) {
+    // Show sign-in/sign-up option if user is not authenticated
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold">Welcome to My App</h1>
