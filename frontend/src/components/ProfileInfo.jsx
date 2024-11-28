@@ -8,58 +8,28 @@ import LikeProfile from "./LikeProfile";
 import { useEffect, useState } from "react";
 
 const ProfileInfo = ({ userProfile }) => {
-	const [profileVisits, setProfileVisits] = useState(userProfile?.profileVisits || 0);
+  const [profileVisits, setProfileVisits] = useState(userProfile?.profileVisits || 0);
 
-	// Function to fetch and update profile visit count from the backend
-	const fetchProfileVisits = async () => {
-	  try {
-		const response = await fetch(`/api/users/profile/${userProfile?.login}`);
-  // Ensure this route is correct
-		if (!response.ok) {
-		  throw new Error("Failed to fetch profile data");
-		}
-		const data = await response.json();
-		setProfileVisits(data.profileVisits); // Update profile visits from backend
-	  } catch (error) {
-		console.error("Error fetching profile visits:", error);
-	  }
-	};
-  
-	// Increment profile visit count both in UI and database
-	const incrementProfileVisit = async () => {
-	  try {
-		// Increment in UI
-		setProfileVisits(prevVisits => prevVisits + 1);
-  
-		// Call API to increment profile visit in the database
-		const response = await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
-			method: "GET", 
-		  });
-  
-		if (!response.ok) {
-		  throw new Error("Failed to increment profile visit");
-		}
-  
-		// Optionally, fetch the updated profile visit count after incrementing
-		fetchProfileVisits();
-  
-	  } catch (error) {
-		console.error("Error incrementing profile visit:", error);
-	  }
-	};
-  
-	useEffect(() => {
-		const updateProfileVisits = async () => {
-			await incrementProfileVisit();  // Ensure the visit count is updated first
-		};
-	
-		if (userProfile?.login) {
-			fetchProfileVisits();
-			updateProfileVisits();
-		}
-	}, [userProfile?.login]);  // Dependency on login to refetch data
-	
-  
+  // Function to fetch and update profile visit count from the backend
+  const fetchProfileVisits = async () => {
+    try {
+      const response = await fetch(`/api/users/profile/${userProfile?.login}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile data");
+      }
+      const data = await response.json();
+      setProfileVisits(data.profileVisits); // Update profile visits from backend
+    } catch (error) {
+      console.error("Error fetching profile visits:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (userProfile?.login) {
+      fetchProfileVisits(); // Fetch profile visits when userProfile login changes
+    }
+  }, [userProfile?.login]); // Dependency on login to refetch data
+
   const memberSince = formatMemberSince(userProfile?.created_at);
 
   return (

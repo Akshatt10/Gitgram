@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { getLikedProfiles, incrementProfileVisit } from '../controllers/user.controller.js';
+import { getLikedProfiles } from '../controllers/user.controller.js';
 import { ensureAutenticated } from '../middleware/ensureAutenticated.js';
 
 const router = express.Router();

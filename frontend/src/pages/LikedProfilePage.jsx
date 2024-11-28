@@ -11,12 +11,12 @@ const LikedProfilesPage = () => {
   useEffect(() => {
     const fetchLikedProfiles = async () => {
       try {
-        const res = await fetch(`/api/users/liked-profiles`, {
+        const res = await fetch("/api/users/liked-profiles", {
           method: "GET",
           credentials: "include",
         });
         const data = await res.json();
-
+  
         if (data.error) throw new Error(data.error);
         setLikedProfiles(data.likedProfiles);
       } catch (error) {
@@ -25,17 +25,14 @@ const LikedProfilesPage = () => {
         setLoading(false);
       }
     };
-
+  
     fetchLikedProfiles();
   }, []);
-
-  if (!authUser) return <p>Please log in to view your liked profiles.</p>;
-
+  
   if (loading) return <p>Loading liked profiles...</p>;
-
-  if (likedProfiles.length === 0)
-    return <p>You haven't liked any profiles yet.</p>;
-
+  
+  if (likedProfiles.length === 0) return <p>You haven't liked any profiles yet.</p>;
+  
   return (
     <div className="text-white p-5">
       <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -48,7 +45,7 @@ const LikedProfilesPage = () => {
             className="flex items-center gap-4 bg-glass p-3 rounded-md"
           >
             <img
-              src={profile.avatarUrl}
+              src={profile.avatarUrl || "/default-avatar.png"} // Default avatar if not found
               alt={`${profile.username}'s avatar`}
               className="w-12 h-12 rounded-full border"
             />
@@ -60,6 +57,6 @@ const LikedProfilesPage = () => {
       </ul>
     </div>
   );
-};
-
+  
+}
 export default LikedProfilesPage;
