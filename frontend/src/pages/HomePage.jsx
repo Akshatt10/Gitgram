@@ -1,4 +1,4 @@
-import { useAuthContext } from "../context/auth.context";
+import { useAuthContext } from "../context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // To handle redirection
 import toast from "react-hot-toast";
