@@ -1,46 +1,46 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true,
         unique: true,
     },
-    name:{
+    name: {
         type: String,
         default: ""
-
     },
-
-    profileUrl:{
+    profileUrl: {
         type: String,
         required: true
     },
-    avatarUrl:{
+    avatarUrl: {
         type: String,
-
     },
-    likedProfiles:{
+    likedProfiles: {
         type: [String],
-        default:[]
+        default: []
     },
-    likedBy:[
+    likedBy: [
         {
-            username:{
-                type:String,
-                required:true,
+            username: {
+                type: String,
+                required: true,
             },
-            avatarUrl:{
-                type:String,
+            avatarUrl: {
+                type: String,
             },
-            likedDate:{
-                type:Date,
-                default:Date.now
+            likedDate: {
+                type: Date,
+                default: Date.now
             }
         }
-    ]
-}, {timestamps:true});
-
+    ],
+    profileVisits: {
+        type: Number,
+        default: 0, // Set the initial count to 0
+    }
+}, {timestamps: true});
 
 const User = mongoose.model("User", userSchema);
 

@@ -6,7 +6,7 @@ import { FaEye } from "react-icons/fa";
 import { formatMemberSince } from "../utils/functions";
 import LikeProfile from "./LikeProfile";
 
-const ProfileInfo = ({userProfile}) => {
+const ProfileInfo = ({ userProfile }) => {
 	// const userProfile = {
 	// 	avatar_url: "https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745",
 	// 	bio: "👨🏻‍💻👨🏻‍💻👨🏻‍💻",
@@ -22,7 +22,7 @@ const ProfileInfo = ({userProfile}) => {
 	// 	login: "johndoe",
 	// };
 
-    const memberSince = formatMemberSince(userProfile?.created_at)
+	const memberSince = formatMemberSince(userProfile?.created_at)
 
 	return (
 		<div className='lg:w-1/3 w-full flex flex-col gap-2 md:sticky md:top-10'>
@@ -34,7 +34,7 @@ const ProfileInfo = ({userProfile}) => {
 					</a>
 					{/* View on Github */}
 					<div className='flex gap-2 items-center flex-col'>
-						<LikeProfile userProfile={userProfile}/>
+						<LikeProfile userProfile={userProfile} />
 						<a
 							href={userProfile?.html_url}
 							target='_blank'
@@ -128,6 +128,10 @@ const ProfileInfo = ({userProfile}) => {
 				<div className='flex items-center gap-2 bg-glass rounded-lg p-2 flex-1 min-w-24'>
 					<RiGitRepositoryFill className='w-5 h-5 text-blue-800' />
 					<p className='text-xs'>Public gists: {userProfile?.public_gists}</p>
+				</div>
+				<div className='flex items-center gap-2 bg-glass rounded-lg p-2 flex-1 min-w-24'>
+					<FaEye className='w-5 h-5 text-blue-800' />
+					<p className='text-xs'>Profile Visits: {userProfile?.profileVisits}</p>
 				</div>
 			</div>
 		</div>
