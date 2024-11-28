@@ -1,9 +1,9 @@
 import express from "express";
 import { explorePopularRepos } from "../controllers/explore.controller.js";
-import {ensureAuthenticated} from '../middleware/ensureAutenticated.js'
+import {ensureAutenticated} from '../middleware/ensureAutenticated.js'
 const router = express.Router();
 
-router.get("/repos/:language", ensureAuthenticated, explorePopularRepos);
+router.get("/repos/:language", ensureAutenticated, explorePopularRepos);
 
 export default router;
 

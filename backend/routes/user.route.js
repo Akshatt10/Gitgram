@@ -1,11 +1,10 @@
 import express from 'express'
 import { getLikes, getUserProfileAndRepos, likeProfile } from '../controllers/user.controller.js';
-import {ensureAuthenticated} from "../middleware/ensureAutenticated.js"
+import {ensureAutenticated} from "../middleware/ensureAutenticated.js"
 const router = express.Router();
 
 router.get("/profile/:username", getUserProfileAndRepos);
-
-router.get("/likes", ensureAuthenticated, getLikes)
-router.post("/like/:username", ensureAuthenticated, likeProfile)
+router.get("/likes", ensureAutenticated, getLikes)
+router.post("/like/:username", ensureAutenticated, likeProfile)
 
 export default router;

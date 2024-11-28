@@ -3,8 +3,7 @@ import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContext";
 
 const LikeProfile = ({ userProfile }) => {
-    
-    const { authUser } = useAuthContext();
+	const { authUser } = useAuthContext();
 
 	const isOwnProfile = authUser?.username === userProfile.login;
 
@@ -23,7 +22,7 @@ const LikeProfile = ({ userProfile }) => {
 		}
 	};
 
-	if (!authUser || isOwnProfile) return null; 
+	if (!authUser || isOwnProfile) return null;
 
 	return (
 		<button

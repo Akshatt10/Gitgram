@@ -6,7 +6,7 @@ import LikesPage from "./pages/LikesPage";
 import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
 import { Toaster } from 'react-hot-toast';
-import BackgroundSwitcher from "./components/Backgroundswitcher"; // Import the background switcher
+import BackgroundSwitcher from "./components/Backgroundswitcher"; 
 import { useAuthContext } from "./context/AuthContext";
 
 function App() {
