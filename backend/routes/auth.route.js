@@ -1,5 +1,6 @@
 import express from 'express';
 import passport from 'passport';
+import { incrementProfileVisit } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
@@ -8,6 +9,8 @@ router.get("/github/callback", passport.authenticate('github', { failureRedirect
 function(req, res) {
   res.redirect(process.env.CLIENT_BASE_URL);
 });
+
+router.get("/profile/:username", incrementProfileVisit);
 
 
 router.get("/check", (req,res)=>{
