@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import { Toaster } from 'react-hot-toast';
 import BackgroundSwitcher from "./components/Backgroundswitcher"; 
 import { useAuthContext } from "./context/AuthContext";
+import LikedProfilesPage from "./pages/LikedProfilePage";
 
 function App() {
   const {authUser, loading} = useAuthContext();
