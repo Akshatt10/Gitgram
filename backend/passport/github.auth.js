@@ -27,7 +27,7 @@ passport.use(new GitHubStrategy({
     //signup
     if(!user){
         const newUser = new User({
-            name:profile.displayNamem,
+            name:profile.displayName,
             username:profile.username,
             profileUrl:profile.profileUrl,
             avatarUrl:profile.photos[0].value,
