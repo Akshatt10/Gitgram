@@ -10,7 +10,19 @@ function(req, res) {
   res.redirect(process.env.CLIENT_BASE_URL);
 });
 
-router.get("/profile/:username", incrementProfileVisit);
+// Example backend API endpoint
+router.get('/api/users/:login', async (req, res) => {
+  const user = await user.findOne({ login: req.params.login });
+  if (user) {
+    res.json({
+      profileVisits: user.profileVisits,
+      // other user data
+    });
+  } else {
+    res.status(404).send("User not found");
+  }
+});
+
 
 
 router.get("/check", (req,res)=>{

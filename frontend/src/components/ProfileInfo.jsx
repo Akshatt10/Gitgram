@@ -10,6 +10,20 @@ import { useEffect, useState } from "react";
 const ProfileInfo = ({ userProfile }) => {
   const [profileVisits, setProfileVisits] = useState(userProfile?.profileVisits || 0);
 
+  // Function to fetch and update profile visit count from the backend
+  const fetchProfileVisits = async () => {
+    try {
+      const response = await fetch(`/api/users/${userProfile?.login}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile data");
+      }
+      const data = await response.json();
+      setProfileVisits(data.profileVisits); // Update profile visits from backend
+    } catch (error) {
+      console.error("Error fetching profile visits:", error);
+    }
+  };
+
   // Increment profile visit count both in UI and database
   const incrementProfileVisit = async () => {
     try {
@@ -26,9 +40,12 @@ const ProfileInfo = ({ userProfile }) => {
   };
 
   useEffect(() => {
+    // Fetch the profile visit count when the component mounts
+    fetchProfileVisits();
+
     // Increment profile visit when component mounts
     incrementProfileVisit();
-  }, []);
+  }, [userProfile?.login]); // Dependency to refetch data when userProfile login changes
 
   const memberSince = formatMemberSince(userProfile?.created_at);
 
