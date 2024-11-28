@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
-import { incrementProfileVisit } from '../controllers/user.controller.js';
+import { getLikedProfiles, incrementProfileVisit } from '../controllers/user.controller.js';
+import { ensureAutenticated } from '../middleware/ensureAutenticated.js';
 
 const router = express.Router();
 
@@ -13,11 +14,11 @@ function(req, res) {
 
 router.get('/api/users/increment-visit/:username', incrementProfileVisit);
 
-
+router.get('/api/users/liked-profiles', ensureAutenticated, getLikedProfiles);
 
 router.get("/check", (req,res)=>{
     if(req.isAuthenticated()){
-        res.send({user: req.user});
+        res.send({user: req.user}); 
     }
     else{
         res.send({user: null});

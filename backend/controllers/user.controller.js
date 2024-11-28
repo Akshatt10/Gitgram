@@ -91,3 +91,20 @@ export const incrementProfileVisit = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// user.controller.js
+export const getLikedProfiles = async (req, res) => {
+    try {
+        // Find the authenticated user
+        const user = await User.findById(req.user._id.toString());
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Return the list of liked profiles
+        res.status(200).json({ likedProfiles: user.likedProfiles });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
