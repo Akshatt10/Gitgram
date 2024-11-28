@@ -13,7 +13,8 @@ const ProfileInfo = ({ userProfile }) => {
 	// Function to fetch and update profile visit count from the backend
 	const fetchProfileVisits = async () => {
 	  try {
-		const response = await fetch(`/api/users/${userProfile?.login}`);  // Ensure this route is correct
+		const response = await fetch(`/api/users/profile/${userProfile?.login}`);
+  // Ensure this route is correct
 		if (!response.ok) {
 		  throw new Error("Failed to fetch profile data");
 		}
@@ -32,8 +33,8 @@ const ProfileInfo = ({ userProfile }) => {
   
 		// Call API to increment profile visit in the database
 		const response = await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
-		  method: "POST", // Ensure you're sending a POST request for incrementing visits
-		});
+			method: "GET", 
+		  });
   
 		if (!response.ok) {
 		  throw new Error("Failed to increment profile visit");
@@ -48,13 +49,16 @@ const ProfileInfo = ({ userProfile }) => {
 	};
   
 	useEffect(() => {
-	  // Fetch the profile visit count when the component mounts
-	  fetchProfileVisits();
-  
-	  // Increment profile visit when component mounts
-	  incrementProfileVisit();
-	}, [userProfile?.login]); // Dependency to refetch data when userProfile login changes
-  
+		const updateProfileVisits = async () => {
+			await incrementProfileVisit();  // Ensure the visit count is updated first
+		};
+	
+		if (userProfile?.login) {
+			fetchProfileVisits();
+			updateProfileVisits();
+		}
+	}, [userProfile?.login]);  // Dependency on login to refetch data
+	
   
   const memberSince = formatMemberSince(userProfile?.created_at);
 

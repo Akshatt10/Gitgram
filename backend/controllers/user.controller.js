@@ -81,16 +81,15 @@ export const incrementProfileVisit = async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Increment profileVisits by 1
         user.profileVisits += 1;
         await user.save();
 
-        // Return updated profile info
         res.status(200).json({ message: "Profile visit incremented", profileVisits: user.profileVisits });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // user.controller.js
 export const getLikedProfiles = async (req, res) => {

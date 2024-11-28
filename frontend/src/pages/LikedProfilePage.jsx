@@ -54,11 +54,6 @@ const LikedProfilesPage = () => {
             />
             <div>
               <p className="font-bold text-lg">{profile.username}</p>
-              {profile.likedDate && (
-                <p className="text-sm text-gray-400">
-                  Liked on: {new Date(profile.likedDate).toLocaleDateString()}
-                </p>
-              )}
             </div>
           </li>
         ))}
