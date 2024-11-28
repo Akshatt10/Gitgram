@@ -12,9 +12,7 @@ function(req, res) {
 });
 
 
-router.get('/api/users/increment-visit/:username', incrementProfileVisit);
 
-router.get('/api/users/liked-profiles', ensureAutenticated, getLikedProfiles);
 
 router.get("/check", (req,res)=>{
     if(req.isAuthenticated()){
