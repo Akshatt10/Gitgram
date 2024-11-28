@@ -13,7 +13,7 @@ const ProfileInfo = ({ userProfile }) => {
 	// Function to fetch and update profile visit count from the backend
 	const fetchProfileVisits = async () => {
 	  try {
-		const response = await fetch(`/api/users/${userProfile?.login}`);
+		const response = await fetch(`/api/users/${userProfile?.login}`);  // Ensure this route is correct
 		if (!response.ok) {
 		  throw new Error("Failed to fetch profile data");
 		}
@@ -24,16 +24,37 @@ const ProfileInfo = ({ userProfile }) => {
 	  }
 	};
   
+	// Increment profile visit count both in UI and database
+	const incrementProfileVisit = async () => {
+	  try {
+		// Increment in UI
+		setProfileVisits(prevVisits => prevVisits + 1);
+  
+		// Call API to increment profile visit in the database
+		const response = await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
+		  method: "POST", // Ensure you're sending a POST request for incrementing visits
+		});
+  
+		if (!response.ok) {
+		  throw new Error("Failed to increment profile visit");
+		}
+  
+		// Optionally, fetch the updated profile visit count after incrementing
+		fetchProfileVisits();
+  
+	  } catch (error) {
+		console.error("Error incrementing profile visit:", error);
+	  }
+	};
+  
 	useEffect(() => {
 	  // Fetch the profile visit count when the component mounts
 	  fetchProfileVisits();
   
-	  // Set an interval to periodically fetch the profile visit count from the backend
-	  const intervalId = setInterval(fetchProfileVisits, 5000); // Fetch every 5 seconds (adjust as needed)
+	  // Increment profile visit when component mounts
+	  incrementProfileVisit();
+	}, [userProfile?.login]); // Dependency to refetch data when userProfile login changes
   
-	  // Clean up the interval when the component unmounts
-	  return () => clearInterval(intervalId);
-	}, [userProfile?.login]); // Depen
   
   const memberSince = formatMemberSince(userProfile?.created_at);
 
