@@ -26,27 +26,34 @@ const ProfileInfo = ({ userProfile }) => {
 
   // Increment profile visit count both in UI and database
   const incrementProfileVisit = async () => {
-    try {
-      // Increment in UI
-      setProfileVisits(prevVisits => prevVisits + 1);
-
-      // Call API to increment profile visit in the database
-      await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
-        method: "POST",
-      });
-    } catch (error) {
-      console.error("Error incrementing profile visit:", error);
-    }
+	try {
+	  // Increment in UI optimistically
+	  setProfileVisits(prevVisits => prevVisits + 1);
+  
+	  // Call API to increment profile visit in the database
+	  const response = await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
+		method: "GET",  // Ensure the method is GET as per backend
+	  });
+	  if (!response.ok) {
+		throw new Error("Failed to increment profile visit");
+	  }
+	  const data = await response.json();
+	  setProfileVisits(data.profileVisits);  // Update state after successful increment
+	} catch (error) {
+	  console.error("Error incrementing profile visit:", error);
+	}
   };
 
   useEffect(() => {
-    // Fetch the profile visit count when the component mounts
-    fetchProfileVisits();
-
-    // Increment profile visit when component mounts
-    incrementProfileVisit();
-  }, [userProfile?.login]); // Dependency to refetch data when userProfile login changes
-
+	// Fetch profile visits on initial mount and when the login changes
+	fetchProfileVisits();
+  
+	// Increment profile visit count only once on mount
+	if (userProfile?.login) {
+	  incrementProfileVisit();
+	}
+  }, [userProfile?.login]); // Dependency ensures it runs only when the login changes
+  
   const memberSince = formatMemberSince(userProfile?.created_at);
 
   return (
