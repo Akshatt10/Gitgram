@@ -8,51 +8,32 @@ import LikeProfile from "./LikeProfile";
 import { useEffect, useState } from "react";
 
 const ProfileInfo = ({ userProfile }) => {
-  const [profileVisits, setProfileVisits] = useState(userProfile?.profileVisits || 0);
+	const [profileVisits, setProfileVisits] = useState(userProfile?.profileVisits || 0);
 
-  // Function to fetch and update profile visit count from the backend
-  const fetchProfileVisits = async () => {
-    try {
-      const response = await fetch(`/api/users/${userProfile?.login}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch profile data");
-      }
-      const data = await response.json();
-      setProfileVisits(data.profileVisits); // Update profile visits from backend
-    } catch (error) {
-      console.error("Error fetching profile visits:", error);
-    }
-  };
-
-  // Increment profile visit count both in UI and database
-  const incrementProfileVisit = async () => {
-	try {
-	  // Increment in UI optimistically
-	  setProfileVisits(prevVisits => prevVisits + 1);
-  
-	  // Call API to increment profile visit in the database
-	  const response = await fetch(`/api/users/increment-visit/${userProfile?.login}`, {
-		method: "GET",  // Ensure the method is GET as per backend
-	  });
-	  if (!response.ok) {
-		throw new Error("Failed to increment profile visit");
+	// Function to fetch and update profile visit count from the backend
+	const fetchProfileVisits = async () => {
+	  try {
+		const response = await fetch(`/api/users/${userProfile?.login}`);
+		if (!response.ok) {
+		  throw new Error("Failed to fetch profile data");
+		}
+		const data = await response.json();
+		setProfileVisits(data.profileVisits); // Update profile visits from backend
+	  } catch (error) {
+		console.error("Error fetching profile visits:", error);
 	  }
-	  const data = await response.json();
-	  setProfileVisits(data.profileVisits);  // Update state after successful increment
-	} catch (error) {
-	  console.error("Error incrementing profile visit:", error);
-	}
-  };
-
-  useEffect(() => {
-	// Fetch profile visits on initial mount and when the login changes
-	fetchProfileVisits();
+	};
   
-	// Increment profile visit count only once on mount
-	if (userProfile?.login) {
-	  incrementProfileVisit();
-	}
-  }, [userProfile?.login]); // Dependency ensures it runs only when the login changes
+	useEffect(() => {
+	  // Fetch the profile visit count when the component mounts
+	  fetchProfileVisits();
+  
+	  // Set an interval to periodically fetch the profile visit count from the backend
+	  const intervalId = setInterval(fetchProfileVisits, 5000); // Fetch every 5 seconds (adjust as needed)
+  
+	  // Clean up the interval when the component unmounts
+	  return () => clearInterval(intervalId);
+	}, [userProfile?.login]); // Depen
   
   const memberSince = formatMemberSince(userProfile?.created_at);
 
