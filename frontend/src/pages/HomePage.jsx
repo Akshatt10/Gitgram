@@ -44,7 +44,7 @@ const HomePage = () => {
 	useEffect(() => {
 		// Redirect to sign-up if no authUser and not loading
 		if (!authLoading && !authUser) {
-			navigate("/signup");
+			navigate("/login");
 		}
 
 		// Fetch data for the logged-in user
